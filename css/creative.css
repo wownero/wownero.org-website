@@ -61,6 +61,10 @@ aside {
 .no-padding {
   padding: 0;
 }
+#speclist {
+  font-size: 12px;
+  text-align: left;
+}
 .navbar-default {
   background-color: white;
   border-color: rgba(34, 34, 34, 0.05);
@@ -207,6 +211,11 @@ header .header-content .header-content-inner p {
     margin-left: auto;
     margin-right: auto;
   }
+}
+#portfolioheader {
+  background-image: none; 
+  background-size: auto;
+  background-color: #000000;
 }
 .section-heading {
   margin-top: 0;
