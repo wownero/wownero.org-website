@@ -49,6 +49,10 @@ p {
   background-color: #222222;
   color: white;
 }
+.bg-white {
+  background-color: #ffffff;
+  color: #000000;
+}
 .text-faded {
   color: rgba(255, 255, 255, 0.7);
 }
@@ -61,9 +65,17 @@ aside {
 .no-padding {
   padding: 0;
 }
-#speclist {
-  font-size: 12px;
+.plist {
+  font-size: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  list-style: square inside;
+}
+.speclist {
+  font-size: 18px;
   text-align: left;
+  color: white;
+  list-style: square inside;
 }
 .navbar-default {
   background-color: white;
@@ -212,10 +224,17 @@ header .header-content .header-content-inner p {
     margin-right: auto;
   }
 }
-#portfolioheader {
-  background-image: none; 
+.portfolioheader {
+  background-image: none;
   background-size: auto;
   background-color: #000000;
+  #color: #000000;
+}
+#bitcoinheader {
+  #background-image: url('../img/portfolio/Bitcoin.png');
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Bitcoin.png');
+  background-position: left;
+  #background-blend-mode: luminosity, hue;
 }
 .section-heading {
   margin-top: 0;
