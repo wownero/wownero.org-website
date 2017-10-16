@@ -46,7 +46,6 @@ p {
   margin-bottom: 20px;
 }
 .note {
-  font-weight: bold;
   font-style: italic;
   font-size: 10;
 }
@@ -78,11 +77,11 @@ aside {
   padding: 0;
 }
 .plist {
-  font-size: 12px;
-  text-align: left;
+  font-size: 14px;
+  text-align: justify ;
   color: rgba(255, 255, 255, 0.7);
   list-style: square inside;
-  padding: none;
+  padding-left: 150px;
 }
 .speclist {
   font-size: 18px;
