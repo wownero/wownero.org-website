@@ -47,7 +47,7 @@ p {
 }
 .note {
   font-style: italic;
-  font-size: 10;
+  font-size: 8;
 }
 .bg-primary {
   background-color: #444444;
@@ -81,7 +81,12 @@ aside {
   text-align: justify ;
   color: rgba(255, 255, 255, 0.7);
   list-style: square inside;
-  padding-left: 150px;
+}
+.linklist {
+  font-size: 14px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  list-style: none inside;
 }
 .speclist {
   font-size: 18px;
@@ -243,10 +248,64 @@ header .header-content .header-content-inner p {
   #color: #000000;
 }
 #bitcoinheader {
-  #background-image: url('../img/portfolio/Bitcoin.png');
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Bitcoin.png');
   background-position: left;
-  #background-blend-mode: luminosity, hue;
+  background-size: 300px 300px;
+}
+#moneroheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Monero.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#myriadheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Myriadcoin.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#vertheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Vertcoin.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#litecoinheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Litecoin.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#decredheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Decred.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#aeonheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Aeon.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#groestlheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Groestlcoin.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#byteballheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Byteball.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#Nyanheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Nyancoin.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#Pepeheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Pepecash.png');
+  background-position: left;
+  background-size: 300px 300px;
+}
+#unitusheader {
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Unitus.png');
+  background-position: left;
+  background-size: 300px 300px;
 }
 .section-heading {
   margin-top: 0;
