@@ -292,12 +292,12 @@ header .header-content .header-content-inner p {
   background-position: left;
   background-size: 300px 300px;
 }
-#Nyanheader {
+#nyanheader {
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Nyancoin.png');
   background-position: left;
   background-size: 300px 300px;
 }
-#Pepeheader {
+#pepeheader {
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../img/portfolio/Pepecash.png');
   background-position: left;
   background-size: 300px 300px;
