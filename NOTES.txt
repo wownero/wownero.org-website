@@ -1,0 +1,17 @@
+-If you could make the splash image, the 3d render of the WOWNERO logo, bounce up and down while leaving the shadow static that'd be amazing
+
+-Not sure how to do the Team/Advisors/Visionary layout super well. Names under the circle image are fine so is rollover img to reveal name.
+
+-I don't have all the team photos yet if you could just make it a circle place holder with the outline colors I designated in the layout pdf I'd appreciate it.
+
+-If you need me to dig out the reddit/discord/twitter logos and such let me know. 
+
+-If any of my information is incorrect or you need to grab a link or image the current website is at http://wownero.org
+
+-Use whatever font, spacing, colors, and sizing you feel best. You're a great web dev and I differ to your judgement. Keeping the font a serif is all I ask.
+
+-ABOUT should go to the second section... RESOURCES should go to the github links and such... TEAM should go to the team section... Community should go to the twitter/reddit links.
+
+---
+
+'Century Gothic' webfont or install base?

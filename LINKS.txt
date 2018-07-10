@@ -1,0 +1,13 @@
+Bitcoin Talk ANN: https://bitcointalk.org/index.php?topic=3088712.0
+Github: https://github.com/wownero/wownero
+Pools: http://mine.wownero.com/
+Block Explorer: http://explore.wownero.com/
+
+Whitepaper: https://openreview.net/pdf?id=BJTuHHvHG
+Roadmap: https://www.benchmarkmaps.com/wp-content/uploads/2012/02/State-Side-CA-Road-Map.jpg
+
+/r/wownero: https://www.reddit.com/r/wownero
+freenode irc: https://kiwiirc.com/client/irc.freenode.net/?nick=suchchatter|?#wownero
+Twitter: https://twitter.com/w0wn3r0
+Discord: https://discord.gg/sQt74ep
+E-mail: wownero@protonmail.com
