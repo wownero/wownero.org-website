@@ -193,7 +193,7 @@ body {
   background: #3D3D3D;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  font-size: 36px;
+  font-size: 25px;
   line-height: 1.18;
   color: #fff; }
 @media (max-width: 1399px) {
@@ -234,7 +234,7 @@ h6 {
   margin-bottom: calc(1.18em / 2); }
 .h1,
 h1 {
-  font-size: 76px;
+  font-size: 50px;
   font-weight: 900;
   line-height: 1.08; }
 @media (max-width: 1399px) {
@@ -255,7 +255,7 @@ h1 {
       font-size: 30px; } }
 .h2,
 h2 {
-  font-size: 50px; }
+  font-size: 45px; }
 @media (max-width: 1399px) {
     .h2,
     h2 {
@@ -274,7 +274,7 @@ h2 {
       font-size: 28px; } }
 .h3,
 h3 {
-  font-size: 46px; }
+  font-size: 36px; }
 @media (max-width: 1399px) {
     .h3,
     h3 {
@@ -293,7 +293,7 @@ h3 {
       font-size: 26px; } }
 .h4,
 h4 {
-  font-size: 36px; }
+  font-size: 25px; }
 @media (max-width: 1399px) {
     .h4,
     h4 {
@@ -312,7 +312,7 @@ h4 {
       font-size: 24px; } }
 .h5,
 h5 {
-  font-size: 30px; }
+  font-size: 25px; }
 @media (max-width: 1023px) {
     .h5,
     h5 {
@@ -323,7 +323,7 @@ h5 {
       font-size: 22px; } }
 .h6,
 h6 {
-  font-size: 24px; }
+  font-size: 20px; }
 @media (max-width: 767px), screen and (max-width: 812px) and (orientation: landscape) {
     .h6,
     h6 {
@@ -568,7 +568,8 @@ blockquote:last-child {
       padding: 16px 15px; } }
 /* Button medium */
 .btn--md {
-  min-width: 421px; }
+  border-radius: 64px;
+  font-size: 20px; }
 @media (max-width: 1199px) {
     .btn--md {
       min-width: 400px; } }
@@ -579,7 +580,7 @@ blockquote:last-child {
 .btn--lg {
   padding: 10px 38px;
   border-radius: 64px;
-  font-size: 46px;
+  font-size: 25px;
   font-weight: 900;
   text-transform: uppercase; }
 @media (max-width: 1399px) {
@@ -608,6 +609,7 @@ blockquote:last-child {
   Footer
 \* ------------------------------------------------------------ */
 .footer {
+font-size: 20px;
 zoom: 65%;
   padding: 102px 0;
   background: #1A1A1A; }
@@ -697,7 +699,7 @@ zoom: 65%;
 .header {
   box-shadow: 0px 0px 7px black;
   zoom: 50%;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -721,7 +723,7 @@ zoom: 65%;
             justify-content: space-between; }
 .header .header__logo,
   .header .header__actions {
-    max-width: 50%;
+    max-width: 40%;
     -webkit-box-flex: 0;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
@@ -1306,7 +1308,7 @@ zoom: 65%;
     .section-logo {
       padding: 40px 0 10px; } }
 .section-logo .section__logo1 {
-    max-width: 600px;
+    max-width: 450px;
     margin: 0 auto; }
 @media (max-width: 1199px) {
       .section-logo .section__logo1 {
