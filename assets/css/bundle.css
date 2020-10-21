@@ -580,7 +580,7 @@ blockquote:last-child {
 .btn--lg {
   padding: 10px 38px;
   border-radius: 64px;
-  font-size: 25px;
+  font-size: 16px;
   font-weight: 900;
   text-transform: uppercase; }
 @media (max-width: 1399px) {
@@ -723,7 +723,7 @@ zoom: 65%;
             justify-content: space-between; }
 .header .header__logo,
   .header .header__actions {
-    max-width: 40%;
+    max-width: 50%;
     -webkit-box-flex: 0;
         -ms-flex: 0 0 50%;
             flex: 0 0 50%; }
