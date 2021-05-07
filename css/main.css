@@ -313,18 +313,18 @@ ul {
     font-size: 1.25em;
 }
 
-ul {
+ul.todo {
   list-style: none;
   margin-left: 0;
   padding-left: 0;
 }
 
-li {
+ul.todo > li {
   padding-left: 1em;
   text-indent: -1em;
 }
 
-li:before {
+ul.todo > li:before {
   content: "+";
   padding-right: 5px;
 }
