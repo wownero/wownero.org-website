@@ -157,7 +157,7 @@ a.li.navbar-brand {
 a.foot-link {
     color: #fff !important;
     font-weight: 300;
-    font-size: 0.75em;
+    font-size: 0.95em;
     color: #ffcc00 !important;
 }
 
@@ -355,14 +355,16 @@ footer ul.list-unstyled {
    ========================================================================== */
 
 .avatar {
+    max-width: 280px;
     margin-top: 96px !important;
     overflow: hidden;
     transform: translatey(0px);
     animation: float 4s ease-in-out infinite;
-    img {
-        width: 100%;
-        height: auto;
-    }
+}
+
+.avatar.img {
+    width: 100%;
+    height: auto;
 }
 
 @keyframes float {
