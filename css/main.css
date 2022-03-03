@@ -149,6 +149,26 @@ a.list-item {
     color: #fff;
 }
 
+a:visited {text-decoration: none}
+a:active {text-decoration: none}
+
+.container-fluid a, .container-fluid a:hover {
+    color: white !important;
+    font-weight: bold;
+}
+
+nav.navbar {
+    padding: .2rem .8rem;
+}
+
+.row.hero {
+    margin-top: 30px;
+}
+
+body > .container-fluid {
+    margin-top: 140px;
+}
+
 a.li.navbar-brand {
     padding: 8px 8px 8px 8px;
     max-width: 300px;
@@ -242,8 +262,8 @@ nav.navbar {
     color: #ff2ad4;
     font-family: roboto, sans-serif;
     font-weight: 900;
-    font-size: 18px;
-    padding: 8px 32px;
+    font-size: 16px;
+    padding: 4px 16px;
     text-decoration: none;
     margin: 8px;
     font-weight: bold;
