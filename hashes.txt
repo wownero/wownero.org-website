@@ -1,29 +1,30 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-ad2bc746ffe78dafcb8706c0fb681d9e16efdad968e1cc0070d6ec27aabcbb62  wownero-aarch64-apple-darwin11-v0.11.1.0.tar.bz2
-236188f8d8e7fad2ff35973f8c2417afffa8855d1a57b4c682fff5b199ea40f5  wownero-aarch64-linux-android-v0.11.1.0.tar.bz2
-fcb2b817354dc33a94d6d152293555af21d4bd947f0ec3d28354ead2b42341b7  wownero-aarch64-linux-gnu-v0.11.1.0.tar.bz2
-a360968f01ee15227b87853df39007776390984f8734a8eb9005346ccff1267e  wownero-arm-linux-android-v0.11.1.0.tar.bz2
-c612d97368d1f289c2903a998a0ec390dff18fc8ce2675e6beb633bc20d3d6dd  wownero-arm-linux-gnueabihf-v0.11.1.0.tar.bz2
-658019d9ecd63af3e0d26017df6301bd618db8fab547225a952dbd8e81c0ba0d  wownero-i686-linux-gnu-v0.11.1.0.tar.bz2
-7411e7c3aead70555111957f4079b2449fc28822d6929deb852a899110046484  wownero-i686-w64-mingw32-v0.11.1.0.zip
-0183adb3129d88c9329857b2609f11a5530c20667be41fcd1f88bad2bbff17d8  wownero-x86_64-apple-darwin11-v0.11.1.0.tar.bz2
-a5b2aa0cffa4c7bf82d9d6072aca0bdeb501bdbde33db1d04edb2c4089878e82  wownero-x86_64-linux-gnu-v0.11.1.0.tar.bz2
-ba4c51fc7b802096497d171823a107e9c6a90f6cfd0396acb0b876a08834eb49  wownero-x86_64-w64-mingw32-v0.11.1.0.zip
+07241b251399ea9b124a0a1c59aa0f731ac0fb185288bfcce7ac1d0b5c37119a  wownero-aarch64-apple-darwin11-v0.11.3.0.tar.bz2
+86069ace3f6ec8f31f094ece73b9b59b46bc4a7b6b5ee069ee3232fa1c0ade21  wownero-aarch64-linux-android-v0.11.3.0.tar.bz2
+9c201e1f3a6c5064927d54dfa34ee0e2a21368c08725e536e446710e1d3a1d85  wownero-aarch64-linux-gnu-v0.11.3.0.tar.bz2
+c06ec7bd6591668b6b2db3cee1dc90a3a9c34f8285513bd23fc2efeac8673437  wownero-arm-linux-android-v0.11.3.0.tar.bz2
+a596ebdaf0752168b4f4db1d2e1be6f9e2f3730df4248e129203eabd4dcd4c5e  wownero-arm-linux-gnueabihf-v0.11.3.0.tar.bz2
+fec347622961f38eb5155467de46e40b93e951fbc07dd9692c1391450c8a8283  wownero-i686-linux-gnu-v0.11.3.0.tar.bz2
+07b648cae69d19baa31f16c5a385f170dad9121f06c5796da9307fb2b25eaf97  wownero-i686-w64-mingw32-v0.11.3.0.zip
+2529a9f9ff86b1de6e9c4842b6c2b49c518e6ca377fc5e6fe44e9b24c4ffc3d0  wownero-riscv64-linux-gnu-v0.11.3.0.tar.bz2
+e04d557d8d962688074b41b49e7612dfa006e733a51fba6fc5e5e3a2fb1be569  wownero-x86_64-apple-darwin11-v0.11.3.0.tar.bz2
+dddb23ca97575d5538a3a3b6a23e49706db15657e124c2300ea7972cb44a0387  wownero-x86_64-linux-gnu-v0.11.3.0.tar.bz2
+60e20de4e98d4ad563bc846d86ce19a4abc09c4df16275438b7e873707f46c8f  wownero-x86_64-w64-mingw32-v0.11.3.0.zip
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEqzovclgY/P8nlIQceTUEtEnGkiAFAmYdlPMACgkQeTUEtEnG
-kiCOXA//a+71EypHtmXek7ex+8SoIGm1yhFDkIT8c6T4wh3boU5zP0Jd4HHxgFj+
-8qyd8GcL9C/ph5TYD99WElLODYodCBAyiSxo8cewVuD5Rdt/ULsSuqLK/OkJAeh/
-U5Y5W2B3FOUWef8b0vFCzFYLZIllKdfcq7lXnwViAc5jfifK/t/b4/SuUo9MeceX
-XCfvpVbjHkq01kmCkkj1KF1oHPoMUXaGuDlN1hxvX8jY1EUbthdoENa+c/aKUb2z
-SPMV6j6+fUmcMuhwHSdSrfgyck+JBaS+XsjSNQxcJLvy729g+WZljLvZd/HQ4c4g
-6HbDhO5SqV4TTSDIB1bXnWFhZtB4h3nbKmCn+N9v+a2U2yIvUB4oy+9/LsjzTI8M
-QahmdLVZUpqwWUdyS9XKl5ULAIP+Xl65XxEyQ3+uSF5yxYiPxcsxwcwy77owB47B
-rz+EAT0cCiM3DTi22hcP8BB/Siyv8rICptBCCDRFjWVCOqYbTXEvGdFPlCw09JF7
-cATlvt1qlQ6VYMom6FbW4Le6KyoU18ZzKAesym6pszFZJ4diXlGQ/JM5EoRjloJh
-w/6/9JEL+BNFldnwt9C7KPSn6oPDBsAEZbjt0ZHcokCbV8liNbKI5NSrbK4+Cv/+
-vXh0S3wU3IAs+TmK+26aRbAlit1hxYWr59PiHBzVt1/x+yijT1M=
-=zgXD
+iQIzBAEBCAAdFiEEqzovclgY/P8nlIQceTUEtEnGkiAFAmdgYAgACgkQeTUEtEnG
+kiB/Wg/6AyDuya2OcwrQw0Xxn0GNYoPZR/EOoTwQ1zamROOh3XKWiVXAs/hhu/GN
+pmS+t41DYwdZSJLxTMOt7MCFuOA29+wkg8In2qEoG+5k8vrSy+adMwL+lTsR30it
+8NTH7mKmce0bmAowFUUJyY0uAH2I6i4/cz+yTLmb2ULFfEHe6MiHHt2FquKD4+Uf
+31fPKqKZTqY23/uPBtIoFNGMURolCaSrrEh7CvR9zOP0J7+hdGYP8H/0dBcqrFWc
+QI3mz+4fjx7IH4/ENip9LcNzamZSH2sI4CvNpXck5SIpry+PEW14b3MM00j54GF8
+xNlyyOA6Qowz5cIovviZibYqau6wGgAWaWY12rG2af7O7hZTsQPFUa60glVil38w
+zIfXSAG5CtT33S91sMPzC8QtOalSq1R8sJZaVC2hxLQ3aM/ECbOkJOQVHAD9oH1t
+KRMmHVz8i3ALCDWdyoiUEoF+IPSyOrqyMhkNkDFfpEbxTG3jAOztBkL+RTmRM0Tf
+BL4+DNbAkImOhV9ecyplmozFJXNjzzcciVmcUQVzGPbSSEyxR7cqxSXP7CxMG83g
+/B9DM+vN12tKJFBSlcCP1hXu6joc8pRQVi0qopy1OB9CFP/ZP5FqATukRXQkGQVu
+/crxQWl8GHDYwiqYnKlmWRIdwq+bjkuehWVNUOeiqZBB6TUZ4Sg=
+=WVcO
 -----END PGP SIGNATURE-----
