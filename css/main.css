@@ -43,6 +43,27 @@ textarea {
     resize: vertical;
 }
 
+pre {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+code {
+    color: #ff2ad4;
+    background-color: rgba(255,255,255,0.1);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+pre code {
+    color: #333;
+    background-color: transparent;
+    padding: 0;
+}
+
 /* ==========================================================================
    Just in-case
    ========================================================================== */
@@ -75,6 +96,14 @@ h1.title {
     font-style: normal;
     letter-spacing: -0.025em;
     line-height: 1;
+}
+
+h2 {
+    color: #fff;
+    font-family: roboto, sans-serif;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 h3 {
@@ -444,3 +473,37 @@ footer ul.list-unstyled {
         border: 1px solid #999;
         page-break-inside: avoid;
     }
+}
+
+/* ==========================================================================
+   Dropdown Menu
+   ========================================================================== */
+
+.dropdown-menu {
+    background-color: #3d3d3d !important;
+    border: 1px solid #ffc608 !important;
+}
+
+.dropdown-item {
+    color: #fff !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #ffc608 !important;
+    color: #3d3d3d !important;
+}
+.sub-footer {
+    background: rgb(255, 42, 212);
+    background: linear-gradient(90deg, rgba(255, 42, 212, 1) 0%, rgba(255, 204, 0, 1) 100%);
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    width: 100%;
+    font-family: roboto, sans-serif;
+    font-size: 0.9em;
+}
+.sub-footer a {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: bold;
+}

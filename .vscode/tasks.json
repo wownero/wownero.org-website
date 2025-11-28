@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "append_css",
+			"type": "shell",
+			"command": "echo \".sub-footer {\n    background: rgb(255, 42, 212);\n    background: linear-gradient(90deg, rgba(255, 42, 212, 1) 0%, rgba(255, 204, 0, 1) 100%);\n    color: #fff;\n    text-align: center;\n    padding: 5px 0;\n    width: 100%;\n    font-family: roboto, sans-serif;\n    font-size: 0.9em;\n}\n.sub-footer a {\n    color: #fff;\n    text-decoration: underline;\n    font-weight: bold;\n}\" >> /home/jw/src/wownero.org-website/css/main.css",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}

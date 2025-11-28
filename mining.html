@@ -1,0 +1,300 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title id="title">Wownero - Mining Guide</title>
+    <meta name="Wownero Such Privacy Many Coins WOW" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="img/Wownero_Logo_ico.png">
+    <link rel="icon" href="img/Wownero_Logo_ico.ico">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/popper.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/njj2uss.css">
+    <script src="js/aos.js"></script>
+    <link href="css/aos.css" rel="stylesheet">
+    <script src="js/translations/traduction.js"></script>
+</head>
+<body onload="translate(navigator.language)" style="overflow-x: hidden;">
+
+<script>
+    AOS.init({
+   once: true})
+</script>
+
+<nav class="navbar fixed-top bm-2 navbar-expand-lg">
+    <div class="d-flex flex-grow-1">
+        <a class="navbar-brand text-center d-none d-lg-inline-block" href="index.html">
+            <img src="img/Wownero_Brand_Mono.svg" alt="Wownero Brand" width="220px">
+        </a>
+        <a class="navbar-brand-two text-center d-lg-none d-inline-block" href="index.html">
+            <img src="img/Wownero_Brand_Mono.svg" alt="Wownero Logo" class="navbar-toggler" height="48" data-toggle="collapse" data-target="#myNavbar">
+        </a>
+    </div>
+            <div class="d-none d-lg-block">
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="https://suchwow.xyz/" class="myButton" id="navmeme">MEMES</a>
+            </li>
+            <li class="nav-item">
+                <a href="https://codeberg.org/wownero/" class="myButton" id="navcode">CODE</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html#wallets" class="myButton" id="walletss">WALLETS</a>
+            </li> 
+        </ul>
+    </div>
+</div>
+    <div class="d-lg-none">
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="https://suchwow.xyz/" class="myButton-mobile-nav" id="m-navmeme">MEMES</a>
+            </li>
+            <li class="nav-item">
+                <a href="https://codeberg.org/wownero/" class="myButton-mobile-nav" id="m-navcode">CODE</a>
+            </li>
+            <li class="nav-item">
+                <a href="index.html#wallets" class="myButton-mobile-nav" id="walletss">WALLETS</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row" data-aos="fade-right">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8 text-white">
+                    <h1 class="title display-2 text-center" style="margin-top: 100px;">
+                        HOW TO MINE WOWNERO
+                    </h1>
+                    <br>
+                    <p> Adapted from the classic JR Swab page @ <a href="https://jrswab.com/blog/how-to-mine-wownero">jrswab.com</a></p>
+                    
+                    <h2>How to Mine Directly With Wownerod</h2>
+                    <ol>
+                    <li>Download the latest version of <a href="https://codeberg.org/wownero/wownero/releases">wownero</a> to your mining computer.</li>
+                    <li>Extract the download</li>
+                    <li>Change to the new directory</li>
+                    <li>Run <code>wownerod --start-mining {YOUR-ADDRESS} --spendkey {SECRET-SPENDKEY} --mining-threads {NUMBER}</code></li>
+                    <li>When the blockchain finishes synchronizing mining will begin.</li>
+                    </ol>
+                    
+                    <h2>How to Mine Wownero with Xmrig</h2>
+                    <ol>
+                    <li>Download the latest version of <a href="https://codeberg.org/wownero/wownero/releases">wownero</a> to your mining computer.</li>
+                    <li>Extract the download</li>
+                    <li>Change to the new directory</li>
+                    <li>Run <code>wownerod</code></li>
+                    <li>Wait until the blockchain has finished synchronizing.</li>
+                    <li>Download the latest version of <a href="https://github.com/xmrig/xmrig">Xmrig</a> to your mining computer(s).</li>
+                    <li>Extract the xmrig download.</li>
+                    <li>Change your directory to the newly extracted directory</li>
+                    <li>Updated the config file to point to your <code>xmrig-proxy</code>. Example:
+                    <pre><code class="language-json">"pools": [
+    {
+        "coin": "wownero",
+        "url": "localhost:34568",
+        "user": "your wallet address",
+        "spend-secret-key": "your secret spend key",
+        "daemon": true
+    }
+],</code></pre></li>
+                    <li>Run <code>xmrig</code></li>
+                    </ol>
+                    
+                    <h2>How to Mine Wownero with Xmrig-Proxy</h2>
+                    <h3>On the computer running Wownerod:</h3>
+                    <p><em>I recommend using another computer on the same network as your miners. Having your wallet address and spend key in the config file on a VPS is insecure.</em></p>
+                    <ol>
+                    <li>Create a server ( another computer ) to run Wownerod.</li>
+                    <li>Download the latest version of <a href="https://github.com/xmrig/xmrig-proxy">Xmrig-Proxy</a> to that computer</li>
+                    <li>Add <code>"spend-secret-key": "your-key-here",</code> to the pools section of the <code>config.json</code> file 
+                    <ul>
+                    <li>There is no CLI parameter for the spend key at the time of writing.</li>
+                    <li><a href="https://pastebin.com/AGzrCymd">Here is the full config.json template with added spend key section</a></li>
+                    </ul></li>
+                    <li>Update the rest of the pools section. Example:
+                    <pre><code class="language-json">"pools": [
+    {
+        "coin": "wownero",
+        "url": "localhost:34568",
+        "user": "your wallet address",
+        "spend-secret-key": "your secret spend key",
+        "daemon": true
+    }
+],</code></pre></li>
+                    <li>Install <a href="https://github.com/tmux/tmux">tmux</a> and run <code>tmux</code> (gnu screen works too)</li>
+                    <li>Start Wownero in the new tmux session: <code>./wownerod</code></li>
+                    <li>Open a new tmux window: <code>ctrl-b c</code></li>
+                    <li>Start Xmrig-Proxy: <code>./xmrig-proxy</code></li>
+                    </ol>
+                    
+                    <h3>On Your Miner(s):</h3>
+                    <ol>
+                    <li>Download the latest version of <a href="https://github.com/xmrig/xmrig">Xmrig</a> to your mining computer(s).</li>
+                    <li>Updated the config file to point to your <code>xmrig-proxy</code>. Example:
+                    <pre><code class="language-json">"pools": [
+    {
+        "url": "xmrig-proxy-ip:port-number",
+        "rig-id": "rig-name"
+    }
+],</code></pre></li>
+                    <li>Run Xmrig: <code>xmrig --spend-secret-key &lt;your key here&gt;</code></li>
+                    </ol>
+                    <p>When configured correctly, your miners will receive jobs from Xmrig-Proxy.</p>
+                    <p>These jobs will show up in the output of xmrig on your miner(s).</p>
+                    
+                    <h3>How to See Miner Hashrates in Xmrig-Proxy when Mining Wownero</h3>
+                    <p><em>The following information was given to me by <a href="https://forum.wownero.com/t/how-to-mine-wownero-with-xmrig-proxy/672/25">@orklemerkle</a> on the Wownero forums.</em></p>
+                    <p>Xmrig-Proxy only gets updates on your miner's hashrate upon each share submitted by the miner.</p>
+                    <p>When running Xmrig-Proxy on a daemon (such as <code>wownerod</code>) the miners only submit a share when they find a solution based on the difficulty passed to them by Xmrig-Proxy.</p>
+                    <p>To get around this, we can set the <code>custom-diff</code> property in <code>config.json</code> to any positive whole number.</p>
+                    <p>Also, set <code>custom-diff-stats</code> to <code>true</code> while in the proxy configuration file.</p>
+                    <p>Using this method, the difficulty of every miner attached to the proxy will be what you set after <code>custom-diff</code>.</p>
+                    <p>You can also set the difficulty on a per miner basis...</p>
+                    <p>To do so simply append <code>+num</code> to the username (normally the wallet address). Where <code>num</code> is your desired difficulty.</p>
+                    <p>The minimum difficulty you can set is 100...</p>
+                    <p>... but you'll want the number to be higher so you don't overload your proxy's bandwidth and CPU.</p>
+                    <p>The goal here is to find a difficulty that allows your miner to send a share about very 30 seconds.</p>
+                    <p>This should have no effect on your actual hashrate or the number of blocks you find over all.</p>
+                    <p>It's just a way to get more data into Xmrig-Proxy.</p>
+                    <p><strong><em>Note:</em></strong>
+                    If you do not supply custom difficulties...</p>
+                    <p>... you will not see the total hashrate of your connected miners.</p>
+                    <p>However, you will see...</p>
+                    <ul>
+                    <li>the total miners connected...</li>
+                    <li>total miners connected ever...</li>
+                    <li>when you find a block...
+                    <ul>
+                    <li>the 24 hour hashrate average</li>
+                    <li>your shares increase.</li>
+                    </ul></li>
+                    </ul>
+                    <p><em>Example:</em></p>
+                    <pre><code class="language-shell">[2021-07-11 13:46:09.248]  proxy    speed (1m) 0.00, (10m) 0.00, (1h) 0.00, (12h) 26.56, (24h) 13.28 kH/s
+WORKER NAME             | LAST IP         | COUNT | ACCEPTED | REJ |  10 MINUTES |    24 HOURS |
+1700                    | 192.168.1.11    |     0 |        1 |   0 |   0.00 kH/s |  13.28 kH/s |
+3900x                   | 192.168.1.8     |     1 |        0 |   0 |   0.00 kH/s |   0.00 kH/s |
+[2021-07-11 13:46:12.718]  proxy    0.00 kH/s, shares: 1/0 +0, upstreams: 1, miners: 2 (max 2) +0/-0
+</code></pre>
+                    <p>Once you get the accepted share the funds will appear in you wallet at some point within the next 288 blocks.</p>
+                    <p>Happy Mining,
+                    J. R.</p>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center text-white">
+  <div class="container-fluid">
+        <div class="row pt-3 pb-3">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+            <h4 class="text-left" id="exchanges">
+                Exchanges:
+            </h4>
+            <ul class="list-unstyled">
+                <li class="list-item">
+                    <a class="foot-link" href="https://basicswapdex.com/" id="basicswap" target="_blank">BasicSwapDEX</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://nonlogs.io" id="nonlogs" target="_blank">NonLogs</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://cexswap.cc" id="cexswap" target="_blank">CexSwap</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://altquick.com/market/Wownero" id="altquick" target="_blank">AltQuick</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://majesticbank.sc" id="majesticbank" target="_blank">Majestic Bank</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://nonkyc.io/market/WOW_USDT" id="nonkyc" target="_blank">NonKYC</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h4 class="text-left" id="mrktinfo">
+                Market Info:
+            </h4>
+            <ul class="list-unstyled">
+                <li class="list-item">
+                    <a class="foot-link" href="https://www.coingecko.com/en/coins/wownero" id="coingecko">CoinGecko</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://coinpaprika.com/coin/wow-wownero" id="coinpaprika">CoinPaprika</a>
+                </li>
+                <li class="list-item">
+                    <a class="foot-link" href="https://www.coinbase.com/price/wownero" id="coinbase">Coinbase</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h4 class="text-left" id="netinfo">
+                Network Info:
+            </h4>
+            <ul class="list-unstyled">
+                <li class="list-item">
+                    <a class="foot-link" href="https://monero.fail/?chain=wownero&network=mainnet" id="pubnodestatus">Public Node Status</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h4 class="text-left" id="bexplorer">
+                Block Explorers:
+            </h4>
+            <ul class="list-unstyled">
+                <li class="list-item">
+                    <a class="foot-link" href="https://explore.wownero.com/" id="wowclub">explore.wownero.com</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div class="p-1" style="background-color: #048ba8;">
+    <div class= "row">
+        <div class="col-md-12">
+            <h5 id="donation">Dig the new look? Donate WOW to it's creator:</h5>
+            <p class="addy">
+                WW2W41q8QzFRkyCxpsvJXPDJ<br>
+                iPQmRSPM3Hf2gXNQA8etGEdvb<br>
+                Qk5a2XPGbMuL5GKanS9BRtb5H<br>
+                Voa97CcooE3nFT2Nai7hsMz
+            </p>
+        </div>
+    </div>
+    <div class= "row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <img alt="Wownero Illustration" src="img/Wownero_Brand_Mono.svg" height="80%" class="pb-md-2 img-responsive"/>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<div class="sub-footer">
+    This site is hosted by <a href="https://such.software" target="_blank">such.software</a>
+</div>
+
+</footer>
+</body>
+</html>
