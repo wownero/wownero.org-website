@@ -1,7 +1,12 @@
 async function translate(lang) {
-    if (lang == 'en-US') return;
+    if (lang == 'en-US' || lang == 'en') {
+        localStorage.removeItem('wowLang');
+        location.reload();
+        return;
+    }
     if (lang == "it" || lang == "it-CH") lang = "it-IT";
     if (lang == "pt") lang = "pt-BR";
+    localStorage.setItem('wowLang', lang);
     var ids = [];
     ids = Array.from(document.querySelectorAll('[id]'));
     var ids_arr = Array.prototype.map.call(ids, (element, i)=>{return element.id});
@@ -12,5 +17,6 @@ async function translate(lang) {
 };
 
 async function getTranslation(data, keys) {
+    if (data[keys] === undefined) return;
     document.getElementById(keys).textContent = JSON.stringify(data[keys]).replace(/["]+/g, '');
 };
