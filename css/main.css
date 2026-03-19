@@ -514,7 +514,13 @@ footer ul.list-unstyled {
 
 @media (max-width: 991.98px) {
     .mobile-bottom-nav {
-        display: flex;
+        display: flex !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .mobile-bottom-nav {
+        display: none !important;
     }
 }
 
