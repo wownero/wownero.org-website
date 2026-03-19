@@ -35,8 +35,8 @@
         <a class="navbar-brand text-center d-none d-lg-inline-block" href="#">
             <img src="img/Wownero_Brand_Mono.svg" alt="Wownero Brand" width="220px">
         </a>
-        <a class="navbar-brand-two text-center d-lg-none d-inline-block">
-            <img src="img/Wownero_Brand_Mono.svg" alt="Wownero Logo" class="navbar-toggler" height="48" data-toggle="collapse" data-target="#myNavbar">
+        <a class="navbar-brand-two text-center d-lg-none d-inline-block" href="#">
+            <img src="img/Wownero_Brand_Mono.svg" alt="Wownero Logo" height="48">
         </a>
     </div>
             <div class="d-none d-lg-block">
@@ -65,32 +65,24 @@
         </ul>
     </div>
 </div>
-    <div class="d-lg-none">
-    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar">
-        <ul class="navbar-nav ml-auto flex-nowrap">
-            <li class="nav-item">
-                <a href="https://suchwow.xyz/" class="myButton-mobile-nav" id="m-navmeme">MEMES</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://codeberg.org/wownero/" class="myButton-mobile-nav" id="m-navcode">CODE</a>
-            </li>
-            <li class="nav-item">
-                <a href="#wallets" class="myButton-mobile-nav" id="walletss">WALLETS</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="myButton-mobile-nav dropdown-toggle" href="#" id="langDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">LANG</a>
-                <div class="dropdown-menu" aria-labelledby="langDropdownMobile">
-                    <a class="dropdown-item" href="#" onclick="translate('en-US'); return false;">English</a>
-                    <a class="dropdown-item" href="#" onclick="translate('fr-FR'); return false;">Fran&#231;ais</a>
-                    <a class="dropdown-item" href="#" onclick="translate('it-IT'); return false;">Italiano</a>
-                    <a class="dropdown-item" href="#" onclick="translate('ru'); return false;">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</a>
-                    <a class="dropdown-item" href="#" onclick="translate('pt-BR'); return false;">Portugu&#234;s (BR)</a>
-                    <a class="dropdown-item" href="#" onclick="translate('pt-PT'); return false;">Portugu&#234;s (PT)</a>
-                </div>
-            </li>
-        </ul>
+</nav>
+
+<!-- Mobile bottom nav bar -->
+<nav class="mobile-bottom-nav d-lg-none">
+    <a href="https://suchwow.xyz/" class="mobile-bottom-nav-item" id="m-navmeme">MEMES</a>
+    <a href="https://codeberg.org/wownero/" class="mobile-bottom-nav-item" id="m-navcode">CODE</a>
+    <a href="#wallets" class="mobile-bottom-nav-item" id="m-walletss">WALLETS</a>
+    <div class="mobile-bottom-nav-item dropup">
+        <a href="#" class="mobile-bottom-nav-link" id="langDropdownMobile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">LANG</a>
+        <div class="dropdown-menu" aria-labelledby="langDropdownMobile">
+            <a class="dropdown-item" href="#" onclick="translate('en-US'); return false;">English</a>
+            <a class="dropdown-item" href="#" onclick="translate('fr-FR'); return false;">Fran&#231;ais</a>
+            <a class="dropdown-item" href="#" onclick="translate('it-IT'); return false;">Italiano</a>
+            <a class="dropdown-item" href="#" onclick="translate('ru'); return false;">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</a>
+            <a class="dropdown-item" href="#" onclick="translate('pt-BR'); return false;">Portugu&#234;s (BR)</a>
+            <a class="dropdown-item" href="#" onclick="translate('pt-PT'); return false;">Portugu&#234;s (PT)</a>
+        </div>
     </div>
-</div>
 </nav>
 
 <div class="container-fluid">

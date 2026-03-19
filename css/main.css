@@ -386,6 +386,7 @@ footer {
     background: #1a1a1a;
     width: 100%;
     overflow: hidden;
+    padding-bottom: 50px;
 }
 
 footer ul.list-unstyled {
@@ -492,6 +493,60 @@ footer ul.list-unstyled {
     background-color: #ffc608 !important;
     color: #3d3d3d !important;
 }
+/* ==========================================================================
+   Mobile Bottom Nav
+   ========================================================================== */
+
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgb(255, 42, 212);
+    background: linear-gradient(90deg, rgba(255, 42, 212, 1) 0%, rgba(255, 204, 0, 1) 100%);
+    box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
+    padding: 8px 0;
+}
+
+.mobile-bottom-nav-item {
+    color: #fff !important;
+    font-family: roboto, sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    text-decoration: none !important;
+    text-align: center;
+    flex: 1;
+    padding: 4px 0;
+}
+
+.mobile-bottom-nav-item:hover,
+.mobile-bottom-nav-item:active {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.mobile-bottom-nav-link {
+    color: #fff !important;
+    font-family: roboto, sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    text-decoration: none !important;
+}
+
+.mobile-bottom-nav-link:hover,
+.mobile-bottom-nav-link:active {
+    color: #fff !important;
+    text-decoration: none !important;
+}
+
+.mobile-bottom-nav .dropup .dropdown-menu {
+    margin-bottom: 10px;
+}
+
 .sub-footer {
     background: rgb(255, 42, 212);
     background: linear-gradient(90deg, rgba(255, 42, 212, 1) 0%, rgba(255, 204, 0, 1) 100%);
