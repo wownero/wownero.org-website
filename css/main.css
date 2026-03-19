@@ -503,13 +503,19 @@ footer ul.list-unstyled {
     left: 0;
     right: 0;
     z-index: 1030;
-    display: flex;
+    display: none;
     justify-content: space-around;
     align-items: center;
     background: rgb(255, 42, 212);
     background: linear-gradient(90deg, rgba(255, 42, 212, 1) 0%, rgba(255, 204, 0, 1) 100%);
     box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
     padding: 8px 0;
+}
+
+@media (max-width: 991.98px) {
+    .mobile-bottom-nav {
+        display: flex;
+    }
 }
 
 .mobile-bottom-nav-item {
