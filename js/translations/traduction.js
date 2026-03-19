@@ -1,7 +1,9 @@
 async function translate(lang) {
     if (lang == 'en-US' || lang == 'en') {
-        localStorage.removeItem('wowLang');
-        location.reload();
+        if (localStorage.getItem('wowLang')) {
+            localStorage.removeItem('wowLang');
+            location.reload();
+        }
         return;
     }
     if (lang == "it" || lang == "it-CH") lang = "it-IT";
