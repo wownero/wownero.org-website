@@ -1,6 +1,7 @@
 async function translate(lang) {
     if (lang == 'en-US') return;
     if (lang == "it" || lang == "it-CH") lang = "it-IT";
+    if (lang == "pt") lang = "pt-BR";
     var ids = [];
     ids = Array.from(document.querySelectorAll('[id]'));
     var ids_arr = Array.prototype.map.call(ids, (element, i)=>{return element.id});
