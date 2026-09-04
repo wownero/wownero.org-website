@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Explainer: Verifiable Grin Coin Burning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a narrative journey, not a direct mirror of the report. It starts with the fundamental "why" (the challenge), explains the "how" (Grin's crypto), compares the "what" (the methods), and concludes with the "recommendation". This structure guides users from problem to solution, making a complex topic digestible. Key interactions include: 1) A visual comparison chart for the methods, allowing users to dynamically re-rank them based on criteria. 2) An interactive simulation of the recommended "Blackhole" method to provide a hands-on understanding of the process. 3) A clear, tabbed interface for exploring different solutions. This structure was chosen to maximize comprehension and engagement for a technical audience, transforming a static report into an explorable learning tool. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: The core challenge of privacy vs. verifiability. Goal: Inform/Contrast. Viz: Side-by-side HTML/CSS diagram. Interaction: Static visual comparison. Justification: Immediately frames the core problem for the user. Library: Tailwind CSS.
+        - Report Info: Pedersen Commitments & Transaction Balancing. Goal: Explain. Viz: HTML/CSS "black box" diagram for commitments and a formula breakdown. Interaction: Hover/toggle effects to reveal concepts. Justification: Simplifies the core cryptography into understandable visual metaphors. Library: Tailwind CSS, Vanilla JS.
+        - Report Info: Comparative analysis of the 3 burn methods. Goal: Compare. Viz: Interactive Bar Chart. Interaction: User clicks a criteria button (e.g., 'Permanence', 'Complexity'), and the chart re-sorts and re-renders to show how each method scores on that metric. Justification: Transforms a static table into an engaging, user-driven comparison tool. Library: Chart.js.
+        - Report Info: The recommended "Blackhole Commitment" method. Goal: Demonstrate. Viz: Step-by-step interactive flowchart/simulator. Interaction: User inputs a "burn amount" and clicks through the steps (key generation, commitment creation, proof publication, verification). Justification: Provides a concrete, hands-on learning experience of the recommended solution, making it less abstract. Library: Vanilla JS.
+        - Report Info: The Grin RFC process. Goal: Inform. Viz: Simple HTML/CSS stepper/timeline. Interaction: Static visual. Justification: Clearly outlines the path to implementation as recommended by the report. Library: Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-weight: 700; }
+        code, .font-code { font-family: 'Source Code Pro', monospace; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 50vh; }
+        .tab-active { border-color: #0891b2; color: #0891b2; background-color: #ecfeff; }
+        .tab-inactive { border-color: transparent; color: #4b5563; }
+        .step-highlight { background-color: #f0f9ff; border-left-color: #0284c7; }
+        .formula-box { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 0.5rem; }
+        .katex-display { display: block; text-align: center; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-criteria.active { background-color: #065f46; color: white; }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-cyan-800">Grin Coin Burn Explainer</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#challenge" class="text-gray-600 hover:text-cyan-700 px-3 py-2 rounded-md text-sm font-medium">The Challenge</a>
+                        <a href="#crypto" class="text-gray-600 hover:text-cyan-700 px-3 py-2 rounded-md text-sm font-medium">Grin's Crypto</a>
+                        <a href="#solutions" class="text-gray-600 hover:text-cyan-700 px-3 py-2 rounded-md text-sm font-medium">Solutions</a>
+                        <a href="#recommendation" class="text-gray-600 hover:text-cyan-700 px-3 py-2 rounded-md text-sm font-medium">Recommendation</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="bg-white">
+            <div class="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Verifiably Burning Grin</h1>
+                <p class="mt-6 max-w-3xl mx-auto text-lg text-slate-600">How do you prove something was destroyed in a system designed for privacy? This interactive report explores the technical and cryptographic challenges of coin burning in Grin.</p>
+            </div>
+        </section>
+
+        <section id="challenge" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">The Privacy vs. Verifiability Dilemma</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">
+                        Coin burning requires public proof that coins are permanently unspendable. Grin's core features—confidential amounts and no addresses—make this uniquely difficult. A burn event must be a deliberate, verifiable exception in a system where all other transactions are designed to be indistinguishable and private.
+                    </p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8 items-start">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200">
+                        <h3 class="text-xl font-bold text-center">Typical Blockchain (e.g., Bitcoin)</h3>
+                        <div class="mt-4 text-center text-sm text-slate-500">Amounts and addresses are public.</div>
+                        <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+                            <div class="text-center mb-4">🔍 On-Chain Data</div>
+                            <div class="space-y-3 text-left font-code text-xs">
+                                <p><span class="font-semibold text-red-600">FROM:</span> 1A1zP1... (Address)</p>
+                                <p><span class="font-semibold text-green-600">TO:</span> 1BvBM... (Burn Address)</p>
+                                <p><span class="font-semibold text-blue-600">AMOUNT:</span> 10.0 Coins</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center text-slate-700 font-semibold">Verification is simple: the amount sent to the public burn address is visible to all.</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-cyan-200 ring-2 ring-cyan-500">
+                        <h3 class="text-xl font-bold text-center">Grin (Mimblewimble)</h3>
+                        <div class="mt-4 text-center text-sm text-slate-500">No addresses, amounts are confidential.</div>
+                        <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+                             <div class="text-center mb-4">🤫 On-Chain Data</div>
+                             <div class="flex justify-around items-center h-[76px]">
+                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center font-bold text-red-700 animate-pulse">IN</div>
+                                <div class="text-2xl font-bold text-slate-400">→</div>
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-700 animate-pulse">OUT</div>
+                             </div>
+                        </div>
+                         <div class="mt-4 text-center text-slate-700 font-semibold">Verification is hard: how do you prove the <span class="text-blue-600">amount</span> in the "OUT" commitment is burned if it's hidden?</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="crypto" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">Grin's Cryptographic Core</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">To understand the solution, we must first understand the building blocks of a Grin transaction.</p>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8 items-start">
+                    <div class="p-6 rounded-lg border border-slate-200">
+                        <h3 class="text-xl font-bold">1. Pedersen Commitments: The "Black Box" Output</h3>
+                        <p class="mt-2 text-slate-600">Every Grin output is a cryptographic commitment, not a plain number. It hides the value while binding the creator to it.</p>
+                        <div class="mt-4 formula-box text-center font-code text-lg">C = r·G + v·H</div>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><span class="font-bold font-code text-cyan-700">C:</span> The commitment (public on-chain data).</li>
+                            <li><span class="font-bold font-code text-red-700">r:</span> The blinding factor (a secret private key). <strong class="text-slate-800">Knowledge of 'r' proves ownership.</strong></li>
+                            <li><span class="font-bold font-code text-green-700">v:</span> The value or amount (a secret).</li>
+                            <li><span class="font-bold font-code text-slate-500">G, H:</span> Elliptic curve generator points.</li>
+                        </ul>
+                        <p class="mt-4 text-slate-600 font-semibold">To "burn" Grin, we must create a commitment `C` where its private key `r` is verifiably destroyed or unknowable.</p>
+                    </div>
+                    <div class="p-6 rounded-lg border border-slate-200">
+                        <h3 class="text-xl font-bold">2. Transaction Integrity: The Zero-Sum Game</h3>
+                        <p class="mt-2 text-slate-600">While values are hidden, the protocol ensures no coins are created from thin air by checking that `Σ(inputs) = Σ(outputs)`. This is done with clever math on the commitments.</p>
+                         <div class="mt-4 formula-box text-left font-code text-sm sm:text-base">
+                            <p>Σ(Output Commitments) - Σ(Input Commitments) =</p>
+                            <p class="pl-4">Σ(r_out·G + v_out·H) - Σ(r_in·G + v_in·H) =</p>
+                            <p class="pl-4 text-blue-600">(Σr_out - Σr_in)·G <span class="text-red-600 line-through">+ (Σv_out - Σv_in)·H</span></p>
+                        </div>
+                        <p class="mt-4 text-slate-600">For a valid transaction, `Σv_out - Σv_in` must be 0. This makes the `H` term cancel out. The transaction is then signed with the excess blinding factor `k = (Σr_out - Σr_in)`, proving everything balanced without revealing amounts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">Exploring Potential Burn Mechanisms</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">Three methods were analyzed. Click the tabs to learn about each one and use the buttons to compare them visually.</p>
+                </div>
+
+                <div class="mt-12">
+                    <div class="mb-4 border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                            <button id="tab-btn-blackhole" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm tab-active">Blackhole Commitment</button>
+                            <button id="tab-btn-scriptless" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm tab-inactive">Scriptless Script Lock</button>
+                            <button id="tab-btn-timelock" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm tab-inactive">Kernel Timelock</button>
+                        </nav>
+                    </div>
+                    <div id="tab-content" class="mt-8">
+                        <div id="tab-panel-blackhole" class="space-y-6">
+                            <h3 class="text-2xl font-bold">Method 1: Blackhole Commitment (Recommended)</h3>
+                            <p class="text-slate-600">This method creates a provably unspendable output by using a public, standardized "destroyed" private key. It's the most robust and practical approach.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                    <h4 class="font-bold text-green-800">How it Works</h4>
+                                    <ol class="list-decimal list-inside mt-2 space-y-1 text-sm text-green-700">
+                                        <li>Define a public constant key `r_burn` by hashing a string like `"grin-burn-commitment-v1"`. Since the hash function is one-way, no one knows the pre-image (the true private key).</li>
+                                        <li>Create a burn output `C_burn = r_burn·G + V_burn·H`. This output is unspendable because its key `r_burn` is unknowable.</li>
+                                        <li>Publish an off-chain "proof-of-burn" message containing `(C_burn, V_burn)`.</li>
+                                        <li>Anyone can verify that `C_burn - (V_burn·H)` equals the public `r_burn·G`, confirming the burned amount.</li>
+                                    </ol>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                                    <h4 class="font-bold">Analysis</h4>
+                                    <ul class="mt-2 space-y-2 text-sm">
+                                        <li><span class="font-semibold text-green-600">✓ Permanent:</span> Yes. The key is cryptographically destroyed.</li>
+                                        <li><span class="font-semibold text-green-600">✓ Verifiable:</span> Yes, via a simple off-chain proof.</li>
+                                        <li><span class="font-semibold text-slate-600">~ Protocol Impact:</span> Minimal. Adds one permanent UTXO.</li>
+                                        <li><span class="font-semibold text-slate-600">~ Complexity:</span> Low-to-Medium. Needs a community standard (RFC).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-panel-scriptless" class="hidden space-y-6">
+                             <h3 class="text-2xl font-bold">Method 2: Scriptless Script Lock</h3>
+                            <p class="text-slate-600">This method uses advanced cryptography (adaptor signatures) to lock funds in a contract with impossible-to-meet conditions. While cryptographically elegant, it's not practical for this purpose.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                    <h4 class="font-bold text-yellow-800">How it Works</h4>
+                                    <p class="text-sm text-yellow-700">A user would create an output locked in a multi-signature contract. To spend it, a secret `t` must be revealed. This secret `t` is tied to solving an impossible problem (like finding the discrete log of H). The funds are thus permanently locked.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                                    <h4 class="font-bold">Analysis</h4>
+                                    <ul class="mt-2 space-y-2 text-sm">
+                                        <li><span class="font-semibold text-green-600">✓ Permanent:</span> Yes, if designed correctly.</li>
+                                        <li><span class="font-semibold text-red-600">✗ Verifiable:</span> Poorly. Requires publishing and understanding a very complex off-chain proof. The on-chain transaction is indistinguishable, which is the opposite of the goal.</li>
+                                        <li><span class="font-semibold text-slate-600">~ Protocol Impact:</span> Minimal. Adds one permanent UTXO.</li>
+                                        <li><span class="font-semibold text-red-600">✗ Complexity:</span> High. A massive engineering effort for little benefit.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                         <div id="tab-panel-timelock" class="hidden space-y-6">
+                             <h3 class="text-2xl font-bold">Method 3: Kernel Timelock</h3>
+                            <p class="text-slate-600">This method uses a built-in feature to lock a transaction until a future block height. It is unsuitable for a true, permanent burn.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                    <h4 class="font-bold text-red-800">How it Works</h4>
+                                    <p class="text-sm text-red-700">A user creates a transaction sending coins to themselves, but sets the `lock_height` on the transaction kernel to a block number 100+ years in the future. The transaction is invalid until that block is mined.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                                    <h4 class="font-bold">Analysis</h4>
+                                    <ul class="mt-2 space-y-2 text-sm">
+                                        <li><span class="font-semibold text-red-600">✗ Permanent:</span> No. The coins become spendable once the lock expires.</li>
+                                        <li><span class="font-semibold text-slate-600">~ Verifiable:</span> The lock itself is visible, but it doesn't verify a burn.</li>
+                                        <li><span class="font-semibold text-red-600">✗ Protocol Impact:</span> Negative. Causes long-term UTXO bloat, which harms Grin's scalability.</li>
+                                        <li><span class="font-semibold text-green-600">✓ Complexity:</span> Low. Uses an existing feature.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-16">
+                    <h3 class="text-2xl font-bold text-center">Interactive Comparison</h3>
+                    <p class="text-center text-slate-600 mt-2">Click a criterion to see how the methods stack up.</p>
+                    <div class="mt-4 flex justify-center flex-wrap gap-2">
+                        <button class="btn-criteria px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-100" data-criteria="verifiability">Verifiability</button>
+                        <button class="btn-criteria px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-100 active" data-criteria="permanence">Permanence</button>
+                        <button class="btn-criteria px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-100" data-criteria="impact">Protocol Impact</button>
+                        <button class="btn-criteria px-4 py-2 text-sm font-medium rounded-md bg-white border border-slate-300 hover:bg-slate-100" data-criteria="complexity">Simplicity</button>
+                    </div>
+                    <div class="mt-6 chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="recommendation" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-slate-900">The Recommended Path Forward</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg text-slate-600">The "Blackhole Commitment" is the clear winner. Here's an interactive look at how it works and how it could be implemented.</p>
+                </div>
+
+                <div class="mt-12 bg-slate-50 p-6 sm:p-8 rounded-xl border border-slate-200">
+                    <h3 class="text-2xl font-bold">Burn Simulator: The Blackhole Method</h3>
+                    <p class="mt-2 text-slate-600">See the process step-by-step. Enter an amount and follow the flow.</p>
+                    
+                    <div class="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                        <label for="burnAmount" class="font-medium">Amount to Burn:</label>
+                        <input type="number" id="burnAmount" value="1000" class="w-full sm:w-48 px-3 py-2 border border-slate-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500">
+                        <button id="startSimBtn" class="w-full sm:w-auto bg-cyan-600 text-white font-bold py-2 px-4 rounded-md hover:bg-cyan-700">Run Simulation</button>
+                    </div>
+
+                    <div id="simulation-steps" class="mt-8 space-y-4">
+                        <!-- Steps will be dynamically inserted here -->
+                    </div>
+                </div>
+
+                <div class="mt-16">
+                    <h3 class="text-2xl font-bold text-center">Path to Implementation: The Grin RFC Process</h3>
+                    <p class="mt-2 text-center text-slate-600">A burn mechanism is only useful if everyone agrees on it. The formal Request for Comments (RFC) process is essential for standardizing the "Blackhole" method.</p>
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <div class="text-2xl font-bold text-cyan-600">1</div>
+                            <h4 class="mt-2 font-semibold">Pre-RFC Discussion</h4>
+                            <p class="text-sm text-slate-500">Propose the idea on the Grin forum to gather community feedback.</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <div class="text-2xl font-bold text-cyan-600">2</div>
+                            <h4 class="mt-2 font-semibold">Draft RFC</h4>
+                            <p class="text-sm text-slate-500">Create a formal document detailing the technical specification.</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <div class="text-2xl font-bold text-cyan-600">3</div>
+                            <h4 class="mt-2 font-semibold">Community Review</h4>
+                            <p class="text-sm text-slate-500">The community debates and refines the proposal for robustness.</p>
+                        </div>
+                        <div class="p-4 bg-slate-100 rounded-lg">
+                            <div class="text-2xl font-bold text-cyan-600">4</div>
+                            <h4 class="mt-2 font-semibold">Adoption</h4>
+                            <p class="text-sm text-slate-500">Once accepted, wallets and services can implement the standard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-slate-800 text-slate-400">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            <p>This interactive application was generated based on the technical report "Verifiable Coin Destruction in Mimblewimble".</p>
+            <p class="text-sm mt-2">All concepts are simplified for educational purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('[id^="tab-btn-"]');
+            const panels = document.querySelectorAll('[id^="tab-panel-"]');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetPanelId = 'tab-panel-' + tab.id.split('-').pop();
+
+                    tabs.forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('tab-inactive');
+                    });
+                    tab.classList.add('tab-active');
+                    tab.classList.remove('tab-inactive');
+
+                    panels.forEach(panel => {
+                        if (panel.id === targetPanelId) {
+                            panel.classList.remove('hidden');
+                            panel.classList.add('fade-in');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // Comparison Chart
+            const chartData = {
+                labels: ['Blackhole Commitment', 'Scriptless Script Lock', 'Kernel Timelock'],
+                datasets: {
+                    permanence: {
+                        label: 'Permanence (Higher is better)',
+                        data: [3, 3, 0], // Permanent, Permanent, Not Permanent
+                        backgroundColor: ['#10b981', '#10b981', '#ef4444'],
+                    },
+                    verifiability: {
+                        label: 'Verifiability (Higher is better)',
+                        data: [3, 1, 2], // High, Medium, High(but flawed)
+                        backgroundColor: ['#10b981', '#f97316', '#f59e0b'],
+                    },
+                    impact: {
+                        label: 'Protocol Impact (Higher is better)',
+                        data: [2, 2, 0], // Minimal, Minimal, Negative
+                        backgroundColor: ['#65a30d', '#65a30d', '#ef4444'],
+                    },
+                    complexity: {
+                        label: 'Simplicity (Higher is better)',
+                        data: [2, 0, 3], // Low-Med, High, Low
+                        backgroundColor: ['#f59e0b', '#ef4444', '#10b981'],
+                    }
+                }
+            };
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            let comparisonChart;
+
+            function renderChart(criteria) {
+                if (comparisonChart) {
+                    comparisonChart.destroy();
+                }
+                const dataset = chartData.datasets[criteria];
+                
+                // Combine labels and data for sorting
+                let combined = chartData.labels.map((label, index) => {
+                    return {
+                        label: label,
+                        data: dataset.data[index],
+                        color: dataset.backgroundColor[index]
+                    };
+                });
+
+                // Sort descending
+                combined.sort((a, b) => b.data - a.data);
+                
+                // Unzip back into separate arrays
+                const sortedLabels = combined.map(item => item.label);
+                const sortedData = combined.map(item => item.data);
+                const sortedColors = combined.map(item => item.color);
+
+                comparisonChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sortedLabels,
+                        datasets: [{
+                            label: dataset.label,
+                            data: sortedData,
+                            backgroundColor: sortedColors,
+                            borderColor: sortedColors.map(c => c + 'B3'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let score = context.raw;
+                                        let text = 'Score: ' + score;
+                                        if (criteria === 'permanence') {
+                                           if(score === 3) text = 'Permanent'; else if(score === 0) text = 'Not Permanent';
+                                        } else if (criteria === 'verifiability') {
+                                           if(score === 3) text = 'High'; else if(score === 2) text = 'Medium (flawed)'; else text = 'Poor';
+                                        } else if (criteria === 'impact') {
+                                           if(score === 2) text = 'Minimal Impact'; else if(score === 0) text = 'Negative Impact';
+                                        } else if (criteria === 'complexity') {
+                                           if(score === 3) text = 'Low Complexity'; else if(score === 2) text = 'Low-Medium Complexity'; else text = 'High Complexity';
+                                        }
+                                        return text;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 3.5,
+                                ticks: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                   font: { size: 14 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const criteriaButtons = document.querySelectorAll('.btn-criteria');
+            criteriaButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    criteriaButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const criteria = button.dataset.criteria;
+                    renderChart(criteria);
+                });
+            });
+
+            renderChart('permanence');
+
+
+            // Simulation logic
+            const startSimBtn = document.getElementById('startSimBtn');
+            const burnAmountInput = document.getElementById('burnAmount');
+            const stepsContainer = document.getElementById('simulation-steps');
+
+            startSimBtn.addEventListener('click', () => {
+                const amount = burnAmountInput.value || 0;
+                stepsContainer.innerHTML = ''; 
+                
+                const steps = [
+                    {
+                        title: '1. Generate Standard "Burn Key"',
+                        content: `A public, standard key is derived by hashing a known string. This makes the private key unknowable.`,
+                        code: `r_burn = SHA256("grin-burn-commitment-v1")`
+                    },
+                    {
+                        title: '2. Create the Burn Commitment',
+                        content: `A new output is created on the blockchain. It commits to the burn amount, <span class="font-bold">${amount}</span>, but locks it with the unspendable key <code class="text-sm">r_burn</code>.`,
+                        code: `C_burn = r_burn·G + ${amount}·H`
+                    },
+                    {
+                        title: '3. Publish Off-Chain Proof',
+                        content: 'Since the amount is hidden on-chain, the burner must publicly post the commitment and the amount for verification.',
+                        code: `{ C_burn, V_burn: ${amount} }`
+                    },
+                    {
+                        title: '4. Public Verification',
+                        content: 'Anyone can now verify the burn. They take the public commitment, subtract the value part, and check if it equals the public burn key.',
+                        code: `C_burn - (${amount}·H)  ==  r_burn·G  =>  ✅ Verified`
+                    }
+                ];
+
+                steps.forEach((step, index) => {
+                    setTimeout(() => {
+                        const stepEl = document.createElement('div');
+                        stepEl.className = 'p-4 border-l-4 border-slate-300 fade-in';
+                        stepEl.innerHTML = `
+                            <h4 class="font-bold text-lg">${step.title}</h4>
+                            <p class="mt-1 text-slate-600">${step.content}</p>
+                            <div class="mt-2 p-3 bg-slate-200 text-slate-800 rounded-md font-code text-sm sm:text-base">${step.code}</div>
+                        `;
+                        stepsContainer.appendChild(stepEl);
+
+                        // Highlight current step
+                        stepEl.classList.add('step-highlight');
+                        if (index > 0) {
+                           stepsContainer.children[index-1].classList.remove('step-highlight');
+                           stepsContainer.children[index-1].classList.add('border-green-500');
+                           stepsContainer.children[index-1].classList.remove('border-slate-300');
+                        }
+                    }, index * 1000); 
+                });
+            });
+            
+            // Trigger sim on load
+            startSimBtn.click();
+        });
+    </script>
+
+</body>
+</html>
+
