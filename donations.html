@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Support the Wownero development fund and follow public donation balances and activity.">
+    <meta name="description" content="Support the Wownero development fund and follow its live balances.">
     <title>Development fund | Wownero</title>
     <link rel="icon" href="img/Wownero_Logo_ico.ico">
     <link rel="stylesheet" href="css/donations.css">
@@ -15,44 +15,47 @@
     <h1>Wownero development fund</h1>
     <p>Support community development. Choose a coin below and send on its native network.</p>
     <p>These addresses support the development fund. The website creator has a separate donation address on the <a href="index.html#donation">home page</a>.</p>
-    <section aria-labelledby="wow-title">
+    <section data-coin="WOW" aria-labelledby="wow-title">
         <h2 id="wow-title">Wownero <small>WOW</small></h2>
         <code class="address">Wo3MWeKwtA918DU4c69hVSNgejdWFCRCuWjShRY66mJkU2Hv58eygJWDJS1MNa2Ge5M1WjUkGHuLqHkweDxwZZU42d16v94mP</code>
-        <p>Balance and activity monitoring planned.</p>
+        <p class="balance">Balance not loaded.</p>
+        <p class="status" role="status"></p>
+        <p>View key, public so anyone can verify incoming donations:</p>
+        <code class="viewkey">e62e40bfd5ca7e3a7f199602a3c97df511780489e1c1861884b00c28abaea406</code>
+        <a href="https://explore.wownero.com" rel="noreferrer">Wownero explorer &rarr;</a>
     </section>
-    <section aria-labelledby="xmr-title">
+    <section data-coin="XMR" aria-labelledby="xmr-title">
         <h2 id="xmr-title">Monero <small>XMR</small></h2>
         <code class="address">44SQVPGLufPasUcuUQSZiF5c9BFzjcP8ucDxzzFDgLf1VkCEFaidJ3u2AhSKMhPLKA3jc2iS8wQHFcaigM6fXmo6AnFRn5B</code>
-        <p>Balance and activity monitoring planned.</p>
+        <p class="balance">Balance not loaded.</p>
+        <p class="status" role="status"></p>
+        <p>The view key will be published here so anyone can verify incoming donations.</p>
     </section>
-    <h2>Public fund activity</h2>
-    <p>Load current native-coin balances and recent activity from mempool.space, Blockscout and PublicNode. Loading contacts these services from your browser. Tokens are not included; balances are not lifetime donation totals.</p>
-    <button id="refresh" type="button" hidden>Load balances and activity</button>
+    <h2>Live balances</h2>
+    <p>wownero.org reads these balances once a minute from its own Wownero, Monero, Bitcoin and Ethereum nodes, and from PublicNode for Solana. Your browser contacts only this site. Tokens are not included, and balances are not lifetime donation totals.</p>
+    <button id="refresh" type="button" hidden>Refresh balances</button>
     <p id="refresh-status" role="status"></p>
-    <noscript>Enable JavaScript to load balances here, or use the explorer links below.</noscript>
-    <section data-chain="btc" aria-labelledby="btc-title">
+    <noscript>Enable JavaScript to show balances here, or read <a href="/donations/balances.json">balances.json</a> directly.</noscript>
+    <section data-coin="BTC" aria-labelledby="btc-title">
         <h2 id="btc-title">Bitcoin <small>BTC, Bitcoin mainnet</small></h2>
         <code class="address">bc1qcw9zglp3fxyl25zswemw7jczlqryms2lsmu464</code>
         <p class="balance">Balance not loaded.</p>
         <p class="status" role="status"></p>
-        <ul class="activity"></ul>
-        <a href="https://mempool.space/address/bc1qcw9zglp3fxyl25zswemw7jczlqryms2lsmu464" rel="noreferrer">View full Bitcoin activity &rarr;</a>
+        <a href="https://mempool.space/address/bc1qcw9zglp3fxyl25zswemw7jczlqryms2lsmu464" rel="noreferrer">Bitcoin activity &rarr;</a>
     </section>
-    <section data-chain="eth" aria-labelledby="eth-title">
+    <section data-coin="ETH" aria-labelledby="eth-title">
         <h2 id="eth-title">Ethereum <small>ETH, Ethereum mainnet</small></h2>
         <code class="address">0xcBc9DC45AE61E5e69eE9D0b33625e4E52662a563</code>
         <p class="balance">Balance not loaded.</p>
         <p class="status" role="status"></p>
-        <ul class="activity"></ul>
-        <a href="https://eth.blockscout.com/address/0xcBc9DC45AE61E5e69eE9D0b33625e4E52662a563" rel="noreferrer">View full Ethereum activity &rarr;</a>
+        <a href="https://eth.blockscout.com/address/0xcBc9DC45AE61E5e69eE9D0b33625e4E52662a563" rel="noreferrer">Ethereum activity &rarr;</a>
     </section>
-    <section data-chain="sol" aria-labelledby="sol-title">
+    <section data-coin="SOL" aria-labelledby="sol-title">
         <h2 id="sol-title">Solana <small>SOL, Solana mainnet</small></h2>
         <code class="address">2PHUHnsK6YXGD87onFjqrQTrPd5yv1E7Wgum1FHdqFuB</code>
         <p class="balance">Balance not loaded.</p>
         <p class="status" role="status"></p>
-        <ul class="activity"></ul>
-        <a href="https://explorer.solana.com/address/2PHUHnsK6YXGD87onFjqrQTrPd5yv1E7Wgum1FHdqFuB" rel="noreferrer">View full Solana activity &rarr;</a>
+        <a href="https://explorer.solana.com/address/2PHUHnsK6YXGD87onFjqrQTrPd5yv1E7Wgum1FHdqFuB" rel="noreferrer">Solana activity &rarr;</a>
     </section>
 </main>
 </body>
