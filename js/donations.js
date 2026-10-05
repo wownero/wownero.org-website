@@ -32,14 +32,20 @@ function describe(symbol, coin) {
         balance = 'Balance unavailable.';
         details.push('Not read yet' + (coin.error ? ': the source could not be reached.' : '.'));
     } else {
-        balance = amount(coin.balance) + ' ' + symbol;
+        /* A view key sees incoming funds only. Until the fund imports key images
+           its "balance" is really the received total, which overstates a wallet
+           that has spent; call it what it is. */
+        const viewOnly = coin.total_received !== undefined && !coin.key_images_synced_at;
+        balance = viewOnly
+            ? 'Received so far: ' + amount(coin.total_received) + ' ' + symbol + ' (balance pending key-image sync)'
+            : amount(coin.balance) + ' ' + symbol;
         if (coin.status === 'stale') {
             balance += ' (last read ' + when(coin.checked_at) + '; the source is currently unreachable)';
         }
     }
     if (coin.total_received !== undefined) {
-        details.push('Received in total: ' + amount(coin.total_received) + ' ' + symbol +
-            ' over ' + coin.incoming_transfers + ' incoming transfer' + (coin.incoming_transfers === 1 ? '' : 's') + '.');
+        details.push((coin.key_images_synced_at ? 'Received in total: ' + amount(coin.total_received) + ' ' + symbol + ' over ' : 'Over ') +
+            coin.incoming_transfers + ' incoming transfer' + (coin.incoming_transfers === 1 ? '' : 's') + '.');
     }
     if (coin.scanning) {
         details.push('The view-only wallet is still scanning the chain (' +
@@ -47,7 +53,7 @@ function describe(symbol, coin) {
     } else if (coin.total_received !== undefined) {
         details.push(coin.key_images_synced_at
             ? 'Spending is reflected as of ' + when(coin.key_images_synced_at) + '.'
-            : 'A view key shows incoming funds only; spending appears after the fund imports its key images.');
+            : 'A view key shows incoming funds only; the balance appears once the fund imports key images from its spending wallet.');
     }
     if (coin.unconfirmed !== undefined && amount(coin.unconfirmed) !== '0') {
         details.push('Unconfirmed: ' + amount(coin.unconfirmed) + ' ' + symbol + '.');
