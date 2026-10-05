@@ -25,11 +25,13 @@ test('a source that cannot be read is never shown as zero', () => {
 test('a view-only wallet says what its balance does and does not show', () => {
     const base = { status: 'ok', balance: '10', total_received: '10', incoming_transfers: 2,
         wallet_height: 100, chain_height: 100, checked_at: '2026-10-05T00:00:00Z', source: 'our node' };
-    const unsynced = describe('WOW', base).details.join(' ');
-    assert.match(unsynced, /Received in total: 10 WOW over 2 incoming transfers/);
-    assert.match(unsynced, /incoming funds only/);
-    const synced = describe('WOW', { ...base, key_images_synced_at: '2026-10-05T00:00:00Z' }).details.join(' ');
-    assert.match(synced, /Spending is reflected as of/);
+    const unsynced = describe('WOW', { ...base, total_received: '90', balance: '90' });
+    assert.equal(unsynced.balance, 'Received so far: 90 WOW (balance pending key-image sync)');
+    assert.match(unsynced.details.join(' '), /incoming funds only/);
+    const synced = describe('WOW', { ...base, total_received: '90', key_images_synced_at: '2026-10-05T00:00:00Z' });
+    assert.equal(synced.balance, '10 WOW');
+    assert.match(synced.details.join(' '), /Received in total: 90 WOW over 2 incoming transfers/);
+    assert.match(synced.details.join(' '), /Spending is reflected as of/);
     const scanning = describe('WOW', { ...base, scanning: true, wallet_height: 40 }).details.join(' ');
     assert.match(scanning, /still scanning the chain \(60 blocks to go\)/);
 });
