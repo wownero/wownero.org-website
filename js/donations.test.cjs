@@ -1,56 +1,35 @@
 'use strict';
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { units, providers } = require('./donations.js');
+const { amount, describe } = require('./donations.js');
 
-test('native amounts retain precision and represent negative net changes', () => {
-    assert.equal(units('1000000000000000001', 18), '1.000000000000000001');
-    assert.equal(units(1, 8), '0.00000001');
-    assert.equal(units(-123456789, 8), '-1.23456789');
-    assert.equal(units(0, 9), '0');
-    for (const invalid of [null, undefined, '', '1.5', NaN, Number.MAX_SAFE_INTEGER + 1]) {
-        assert.throws(() => units(invalid, 8));
+test('server amounts keep their precision and lose only trailing zeros', () => {
+    assert.equal(amount('1.000000000000000001'), '1.000000000000000001');
+    assert.equal(amount('0.00027878'), '0.00027878');
+    assert.equal(amount('5.637709531'), '5.637709531');
+    assert.equal(amount('0.000000000000000000'), '0');
+    assert.equal(amount('12'), '12');
+    for (const invalid of [null, undefined, '', '1.5e3', 'NaN', 1.5, '1.']) {
+        assert.throws(() => amount(invalid));
     }
 });
 
-test('provider failures never become zero balances', async () => {
-    const original = global.fetch;
-    try {
-        global.fetch = async () => ({ ok: false, status: 429 });
-        for (const provider of Object.values(providers)) {
-            await assert.rejects(provider.balance('address'));
-        }
-        global.fetch = async () => ({ ok: true, json: async () => ({ status: '0', result: '0' }) });
-        await assert.rejects(providers.eth.balance('address'));
-        global.fetch = async () => ({ ok: true, json: async () => ({ error: { code: -32000 } }) });
-        await assert.rejects(providers.sol.balance('address'));
-    } finally { global.fetch = original; }
+test('a source that cannot be read is never shown as zero', () => {
+    const never = describe('ETH', { status: 'unavailable', error: 'OSError: no route', source: 'x' });
+    assert.equal(never.balance, 'Balance unavailable.');
+    const stale = describe('ETH', { status: 'stale', balance: '0.5', checked_at: '2026-10-05T00:00:00Z', source: 'x' });
+    assert.match(stale.balance, /^0\.5 ETH \(last read .+unreachable\)$/);
+    assert.equal(describe('XMR', undefined).balance, 'Not monitored yet.');
 });
 
-test('Bitcoin net activity accounts for change and preserves pending status', async () => {
-    const original = global.fetch;
-    try {
-        global.fetch = async () => ({ ok: true, json: async () => [{ txid: 'abc',
-            vin: [{ prevout: { scriptpubkey_address: 'fund', value: 100000000 } }],
-            vout: [{ scriptpubkey_address: 'fund', value: 70000000 },
-                { scriptpubkey_address: 'other', value: 29000000 }],
-            status: { confirmed: false } }] });
-        const [activity] = await providers.btc.activity('fund');
-        assert.match(activity.label, /-0\.3 BTC/);
-        assert.match(activity.label, /pending/);
-    } finally { global.fetch = original; }
-});
-
-test('Ethereum failed transfers are marked failed', async () => {
-    const original = global.fetch;
-    try {
-        global.fetch = async () => ({ ok: true, json: async () => ({ items: [{
-            hash: 'abc', from: { hash: 'FUND' }, to: { hash: 'other' },
-            value: '1000000000000000001', status: 'error'
-        }] }) });
-        const [activity] = await providers.eth.activity('fund');
-        assert.match(activity.label, /Outgoing/);
-        assert.match(activity.label, /failed/);
-        assert.match(activity.label, /1\.000000000000000001/);
-    } finally { global.fetch = original; }
+test('a view-only wallet says what its balance does and does not show', () => {
+    const base = { status: 'ok', balance: '10', total_received: '10', incoming_transfers: 2,
+        wallet_height: 100, chain_height: 100, checked_at: '2026-10-05T00:00:00Z', source: 'our node' };
+    const unsynced = describe('WOW', base).details.join(' ');
+    assert.match(unsynced, /Received in total: 10 WOW over 2 incoming transfers/);
+    assert.match(unsynced, /incoming funds only/);
+    const synced = describe('WOW', { ...base, key_images_synced_at: '2026-10-05T00:00:00Z' }).details.join(' ');
+    assert.match(synced, /Spending is reflected as of/);
+    const scanning = describe('WOW', { ...base, scanning: true, wallet_height: 40 }).details.join(' ');
+    assert.match(scanning, /still scanning the chain \(60 blocks to go\)/);
 });

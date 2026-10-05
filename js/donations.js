@@ -1,148 +1,115 @@
-/* Public addresses live in donations.html. No wallet keys are used here. */
+/* Development fund balances, read by wownero.org from its own nodes once a minute
+   and published as /donations/balances.json. The browser contacts only this site.
+   Public addresses and view keys live in donations.html and in that file; no
+   spending credential is involved anywhere. */
 'use strict';
 
-function units(value, decimals) {
-    if (!/^-?\d+$/.test(String(value)) ||
-        (typeof value === 'number' && !Number.isSafeInteger(value))) {
-        throw new Error('Provider returned an invalid amount');
+const BALANCES_URL = '/donations/balances.json';
+
+/* Server amounts are exact decimal strings. Show them without trailing zeros and
+   refuse anything else rather than guess. */
+function amount(value) {
+    if (typeof value !== 'string' || !/^-?\d+(\.\d+)?$/.test(value)) {
+        throw new Error('Invalid amount in balances.json');
     }
-    const amount = BigInt(value);
-    const digits = (amount < 0n ? -amount : amount).toString().padStart(decimals + 1, '0');
-    const fraction = digits.slice(-decimals).replace(/0+$/, '');
-    return (amount < 0n ? '-' : '') + digits.slice(0, -decimals) + (fraction ? '.' + fraction : '');
+    if (!value.includes('.')) return value;
+    const trimmed = value.replace(/0+$/, '').replace(/\.$/, '');
+    return trimmed === '-0' ? '0' : trimmed;
 }
 
-async function request(url, options = {}) {
+function when(iso) {
+    const date = new Date(iso);
+    return Number.isNaN(date.getTime()) ? 'an unknown time' : date.toLocaleString();
+}
+
+/* Lines for one coin. A coin whose source could not be read keeps its last good
+   value, marked stale; one never read says so. Neither is ever shown as zero. */
+function describe(symbol, coin) {
+    if (!coin) return { balance: 'Not monitored yet.', details: ['Monitoring starts when this view key is published.'] };
+    const details = [];
+    let balance;
+    if (coin.balance === undefined) {
+        balance = 'Balance unavailable.';
+        details.push('Not read yet' + (coin.error ? ': the source could not be reached.' : '.'));
+    } else {
+        balance = amount(coin.balance) + ' ' + symbol;
+        if (coin.status === 'stale') {
+            balance += ' (last read ' + when(coin.checked_at) + '; the source is currently unreachable)';
+        }
+    }
+    if (coin.total_received !== undefined) {
+        details.push('Received in total: ' + amount(coin.total_received) + ' ' + symbol +
+            ' over ' + coin.incoming_transfers + ' incoming transfer' + (coin.incoming_transfers === 1 ? '' : 's') + '.');
+    }
+    if (coin.scanning) {
+        details.push('The view-only wallet is still scanning the chain (' +
+            Math.max(0, coin.chain_height - coin.wallet_height) + ' blocks to go), so these figures are partial.');
+    } else if (coin.total_received !== undefined) {
+        details.push(coin.key_images_synced_at
+            ? 'Spending is reflected as of ' + when(coin.key_images_synced_at) + '.'
+            : 'A view key shows incoming funds only; spending appears after the fund imports its key images.');
+    }
+    if (coin.unconfirmed !== undefined && amount(coin.unconfirmed) !== '0') {
+        details.push('Unconfirmed: ' + amount(coin.unconfirmed) + ' ' + symbol + '.');
+    }
+    if (coin.status === 'ok' && coin.checked_at) {
+        details.push('Read ' + when(coin.checked_at) + ' from ' + coin.source + '.');
+    }
+    return { balance, details };
+}
+
+async function load() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-        const response = await fetch(url, { ...options, signal: controller.signal,
-            credentials: 'omit', referrerPolicy: 'no-referrer' });
-        if (!response.ok) throw new Error('Provider returned HTTP ' + response.status);
-        return await response.json();
+        const response = await fetch(BALANCES_URL, { cache: 'no-store', signal: controller.signal });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const doc = await response.json();
+        if (doc.schema !== 'devfund-balances/v1') throw new Error('Unknown balances format');
+        return doc;
     } finally {
         clearTimeout(timeout);
     }
 }
 
-async function solana(method, address, extra = {}) {
-    const data = await request('https://solana-rpc.publicnode.com', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jsonrpc: '2.0', id: 1, method,
-            params: [address, { commitment: 'finalized', ...extra }] })
-    });
-    if (data.error || !Object.hasOwn(data, 'result')) throw new Error('Solana RPC request failed');
-    return data.result;
-}
-
-const providers = {
-    btc: {
-        async balance(address) {
-            const data = await request('https://mempool.space/api/address/' + address);
-            const chain = data.chain_stats;
-            const pending = data.mempool_stats;
-            // Validate each integer before arithmetic; never coerce missing data to zero.
-            [chain.funded_txo_sum, chain.spent_txo_sum, pending.funded_txo_sum,
-                pending.spent_txo_sum].forEach(value => units(value, 8));
-            return units(BigInt(chain.funded_txo_sum) - BigInt(chain.spent_txo_sum), 8) +
-                ' BTC confirmed; pending net change ' +
-                units(BigInt(pending.funded_txo_sum) - BigInt(pending.spent_txo_sum), 8) + ' BTC';
-        },
-        async activity(address) {
-            const data = await request('https://mempool.space/api/address/' + address + '/txs');
-            return data.slice(0, 10).map(tx => {
-                const received = tx.vout.filter(out => out.scriptpubkey_address === address)
-                    .reduce((sum, out) => sum + BigInt(out.value), 0n);
-                const spent = tx.vin.filter(input => input.prevout?.scriptpubkey_address === address)
-                    .reduce((sum, input) => sum + BigInt(input.prevout.value), 0n);
-                return { id: tx.txid, url: 'https://mempool.space/tx/' + encodeURIComponent(tx.txid),
-                    label: units(received - spent, 8) + ' BTC net change, ' +
-                        (tx.status.confirmed ? 'confirmed' : 'pending') };
-            });
-        },
-        note: 'Latest 10 transactions. Net change includes change outputs and fees on outgoing transactions.'
-    },
-    eth: {
-        async balance(address) {
-            const data = await request('https://eth.blockscout.com/api?module=account&action=balance&address=' + address);
-            if (data.status !== '1') throw new Error('Ethereum balance provider could not return a balance');
-            return units(data.result, 18) + ' ETH (latest indexed balance)';
-        },
-        async activity(address) {
-            const data = await request('https://eth.blockscout.com/api/v2/addresses/' + address + '/transactions');
-            return data.items.slice(0, 10).map(tx => {
-                const from = tx.from?.hash?.toLowerCase() === address.toLowerCase();
-                const to = tx.to?.hash?.toLowerCase() === address.toLowerCase();
-                return { id: tx.hash, url: 'https://eth.blockscout.com/tx/' + encodeURIComponent(tx.hash),
-                    label: (from && to ? 'Self-transfer' : from ? 'Outgoing' : 'Incoming') +
-                        ' ' + units(tx.value, 18) + ' ETH, ' +
-                        (tx.status === 'ok' ? 'successful' : tx.status === 'error' ? 'failed' : 'pending or unconfirmed') };
-            });
-        },
-        note: 'Latest 10 regular transactions. Transfer values exclude fees. Internal transfers and tokens are available in the explorer.'
-    },
-    sol: {
-        async balance(address) {
-            const data = await solana('getBalance', address);
-            return units(data.value, 9) + ' SOL finalized';
-        },
-        async activity(address) {
-            const data = await solana('getSignaturesForAddress', address, { limit: 10 });
-            return data.map(tx => ({ id: tx.signature,
-                url: 'https://explorer.solana.com/tx/' + encodeURIComponent(tx.signature),
-                label: (tx.err ? 'Failed' : 'Finalized') + ' transaction referencing this account' }));
-        },
-        note: 'Latest 10 account transactions. Open a transaction for incoming and outgoing transfer details; account activity is not necessarily a donation.'
-    }
-};
-
-async function refreshCard(card) {
-    const provider = providers[card.dataset.chain];
-    const address = card.querySelector('.address').textContent.trim();
-    const balance = card.querySelector('.balance');
-    const status = card.querySelector('.status');
-    const activity = card.querySelector('.activity');
-    balance.textContent = 'Loading balance…';
-    status.textContent = 'Loading activity…';
-    activity.replaceChildren();
-    const results = await Promise.allSettled([provider.balance(address), provider.activity(address)]);
-    const checked = new Date().toLocaleString();
-    balance.textContent = results[0].status === 'fulfilled' ? results[0].value :
-        'Balance unavailable. Try again or use the explorer below.';
-    if (results[1].status === 'fulfilled') {
-        for (const tx of results[1].value) {
-            const item = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = tx.url;
-            link.rel = 'noreferrer';
-            link.textContent = tx.label + ' (' + tx.id.slice(0, 12) + '…)';
-            item.append(link);
-            activity.append(item);
+function render(doc) {
+    for (const card of document.querySelectorAll('[data-coin]')) {
+        const symbol = card.dataset.coin;
+        const balance = card.querySelector('.balance');
+        const status = card.querySelector('.status');
+        try {
+            const view = describe(symbol, doc.coins[symbol]);
+            balance.textContent = view.balance;
+            status.textContent = view.details.join(' ');
+        } catch (error) {
+            balance.textContent = 'Balance unavailable.';
+            status.textContent = 'The published balance could not be read.';
         }
-        status.textContent = (results[1].value.length ? provider.note : 'No recent activity returned by the provider.') +
-            ' Checked ' + checked + '.';
-    } else {
-        status.textContent = 'Activity unavailable. Try again or use the explorer below. Checked ' + checked + '.';
     }
-    if (results[0].status === 'fulfilled') balance.textContent += '. Retrieved ' + checked + '.';
 }
 
 if (typeof document !== 'undefined') {
     const button = document.getElementById('refresh');
-    button.hidden = false;
-    button.addEventListener('click', async () => {
+    const status = document.getElementById('refresh-status');
+    const refresh = async () => {
         button.disabled = true;
-        const status = document.getElementById('refresh-status');
-        status.textContent = 'Checking public providers…';
+        status.textContent = 'Loading balances…';
         try {
-            await Promise.allSettled([...document.querySelectorAll('[data-chain]')].map(refreshCard));
-            status.textContent = 'Check finished. Each coin shows its result below.';
+            const doc = await load();
+            render(doc);
+            status.textContent = 'Balances published ' + when(doc.generated_at) + '.';
+        } catch (error) {
+            for (const card of document.querySelectorAll('[data-coin] .balance')) {
+                card.textContent = 'Balance unavailable.';
+            }
+            status.textContent = 'Balances could not be loaded. Use the explorer links below.';
         } finally {
-            button.textContent = 'Refresh balances and activity';
-            // A short cooldown avoids accidental bursts against public providers.
-            setTimeout(() => { button.disabled = false; }, 10000);
+            button.disabled = false;
         }
-    });
+    };
+    button.hidden = false;
+    button.addEventListener('click', refresh);
+    refresh();
 }
 
-if (typeof module !== 'undefined') module.exports = { units, providers };
+if (typeof module !== 'undefined') module.exports = { amount, describe };
