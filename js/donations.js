@@ -59,7 +59,7 @@ function describe(symbol, coin) {
         details.push('Unconfirmed: ' + amount(coin.unconfirmed) + ' ' + symbol + '.');
     }
     if (coin.status === 'ok' && coin.checked_at) {
-        details.push('Read ' + when(coin.checked_at) + ' from ' + coin.source + '.');
+        details.push('Read ' + when(coin.checked_at) + '.');
     }
     return { balance, details };
 }
